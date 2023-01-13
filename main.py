@@ -40,12 +40,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                                         'erhalten. \n')
 
 
+async def netzfrequenz(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    frequenz = netzfrequenz_pull()
+    await context.bot.send_message(update.effective_user.id,
+                                   text=f"Die aktuelle Netzfrequenz beträgt: {frequenz}Hz")
+
+async def mitmachen(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await context.bot.send_message(update.effective_user.id,
+                                   text=f"https://github.com/TheRedSpark/Netzfrequenzmessung")
+    await context.bot.send_message(update.effective_user.id,
+                                   text=f"Schau dir gerne das Repo an vielleicht möchtest du dich ja beteiligen.")
+
+async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await context.bot.send_message(update.effective_user.id,
+                                   text=f"Um einen guten Einstieg in das Thema zu erhalten empfehle ich dir diesen CC3 Talk\n")
+    await context.bot.send_message(update.effective_user.id,
+                                   text=f"https://www.youtube.com/watch?v=yaCiVvBD-xc\n")
+
+
 def main() -> None:
     # Creating a telegram bot.
     application = Application.builder().token(v.telegram_netzfrequenz_api(is_live)).build()
 
     # Adding the handlers for the commands.
     application.add_handler(CommandHandler(["start", "help"], start))
+    application.add_handler(CommandHandler(["netzfrequenz", "f"], netzfrequenz))
+    application.add_handler(CommandHandler(["info", "i"], info))
+    application.add_handler(CommandHandler("mitmachen", mitmachen))
 
     application.run_polling(1)
 
