@@ -96,7 +96,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                                         f"Netzfrequenzmessung-Bot V{version}\n")
     await context.bot.send_message(update.effective_user.id,
                                    text=f'Benutze /help um Hilfe mit den Befehlen und der Funktionsweise des Bots zu '
-                                        'erhalten. \n')
+                                        'erhalten. \n'
+                                        'Benutze /info oder /i um Infos über die Netzfrequenz zu erhalten\n'
+                                        'Benutze /netzfrequenz oder /f um dir die aktuelle Netzfrequenz anzuzeigen zu lassen \n'
+                                        'Benutze /mitmachen um den Quellcode und Zugang zum Repo auf Github zu erhalten\n')
 
 
 async def netzfrequenz(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
