@@ -6,3 +6,4 @@ requests==2.28.2
 setuptools==49.2.1
 urllib3==1.26.14
 python-telegram-bot==20.0a2
+mysql-connector-python==8.0.30
