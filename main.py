@@ -123,7 +123,7 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 update.effective_message.text_markdown, update.effective_message.id, update.effective_user.first_name,
                 update.effective_user.last_name, update.effective_user.language_code)
     await context.bot.send_message(update.effective_user.id,
-                                   text=f"Um einen guten Einstieg in das Thema zu erhalten empfehle ich dir diesen CC3 Talk\n")
+                                   text=f"Um einen guten Einstieg in das Thema zu erhalten empfehle ich dir diesen C2C3 Talk\n")
     await context.bot.send_message(update.effective_user.id,
                                    text=f"https://www.youtube.com/watch?v=yaCiVvBD-xc\n")
 
