@@ -83,7 +83,7 @@ def netzfrequenz_pull():
     zeit = y[3].replace("<z> ", "").replace("</z>", "")
 
     print(zeit)
-    print(netzfrequenz)
+    return netzfrequenz
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
