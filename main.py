@@ -1,3 +1,5 @@
+import time
+import mysql.connector  # 8.0.28
 import requests
 import math as Math
 from package import variables as v
@@ -11,6 +13,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 on_server = False
 version = "1.0"
 is_live = True
+ort = "server"
 
 if on_server:
     pass
