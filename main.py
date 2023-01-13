@@ -93,8 +93,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_create(update.effective_user.id, update.effective_user.username)
     await context.bot.send_message(update.effective_user.id,
                                    text=f"Der Netzfrequenzmessung-Bot sagt herzlich hallo ;-)\n"
-                                        f"Netzfrequenzmessung-Bot {version}\n"
-                                        f"https://github.com/TheRedSpark/Netzfrequenzmessung")
+                                        f"Netzfrequenzmessung-Bot V{version}\n")
     await context.bot.send_message(update.effective_user.id,
                                    text=f'Benutze /help um Hilfe mit den Befehlen und der Funktionsweise des Bots zu '
                                         'erhalten. \n')
