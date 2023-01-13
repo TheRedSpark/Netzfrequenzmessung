@@ -34,7 +34,8 @@ def netzfrequenz_pull():
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await context.bot.send_message(update.effective_user.id,
                                    text=f"Der Netzfrequenzmessung-Bot sagt herzlich hallo ;-)\n"
-                                        f"Netzfrequenzmessung-Bot {version}")
+                                        f"Netzfrequenzmessung-Bot {version}\n"
+                                        f"https://github.com/TheRedSpark/Netzfrequenzmessung")
     await context.bot.send_message(update.effective_user.id,
                                    text=f'Benutze /help um Hilfe mit den Befehlen und der Funktionsweise des Bots zu '
                                         'erhalten. \n')
