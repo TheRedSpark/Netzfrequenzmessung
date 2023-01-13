@@ -1,6 +1,6 @@
 CREATE TABLE `Netzfrequenmessung`.`Users` (
-  `idUser` INT NOT NULL AUTO_INCREMENT,
-  `User_Id` INT NULL,
+  `idUser` BIGINT NOT NULL AUTO_INCREMENT,
+  `User_Id` BIGINT NULL,
   `Username` VARCHAR(45) NULL,
   `Email` VARCHAR(150) NULL,
   `Push` TINYINT NULL DEFAULT 0,
