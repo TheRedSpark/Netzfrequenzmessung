@@ -15,6 +15,54 @@ on_server = False
 version = "1.0"
 is_live = False
 ort = "server"
+netz_alert = 0
+
+frequenz_regeln = [
+    # [Netzfrequenz ,"Erklärung des Zustandes"],
+    [52.00, f'Oberhalb dieser Schwelle beginnt im europäischen Netzverbund ein unzulässiger Betriebszustand. '
+            f'Netzersatzanlagen steuern diesen Wert gezielt an, um andere Erzeuger (pv etc.) zu deaktivieren.'
+            f'Bei weiterer Frequenzsteigerung wird ein gezielter Blackout ausgelöst'],
+
+    [51.50, f'Alle regelbaren Kraftwerke sollten an diesem punkt die Stromerzeugung komplett eingestellt haben.'
+            f'Dies beinhaltet auch Windräder, PV-Anlagen und Gaskraftwerke'],
+
+    [51.00, f'Von 51,00 Hz bis 51,50 Hz müssen neue Kraftwerke mindestens 90 Minuten lauffähig bleiben. '
+            f'Ältere Kraftwerke wie unregelbare PV-Anlagen gehen ab hier bereits vom Netz.'],
+
+    [50.50,
+     f'Obere Grenze der im Normalbetrieb geduldeten Frequenzabweichungen. Netz-ersatzanlagen halten die Frequenz '
+     f'bei 50,5 bis 51 Hz.'],
+
+    [50.20, f'von 50,20 Hz bis 51,5 Hz sollen regelbare Erzeugungsanlagen (pv, BHKW, etc.) eine frequenzbasierte '
+            f'leistungsreduktion vornehmen. Damit sezut die Sekundärregelung Pumpspeicherkraftwerke steigern'
+            f' die Speicherleistung und Gaskraftwerke drosseln die Einspeißung. '
+            f'Sollte die Überproduktion länger als 15 min anhalten werden Kernkraftwerke '
+            f'gedrosselt.'],
+
+    [50.00,
+     f'Wir befinden uns auf dem Band von 49,5 bis 50,5 Hz. Die Grundfrequenz des Stromnetzes beträgt 50 Hz damit'
+     f' befinden wir uns im Normalbetrieb.'],
+
+    [49.80,
+     f'Stufe 1 der Netzstabilisierung. Der ÜNB kann die Aktivierung von zusätzlicher Erzeugungsleistung anweisen.'],
+
+    [49.50, f'Untere Grenze der im Normalbetrieb geduldeten Frequenzabweichungen wurde erreicht.'],
+
+    [49.00, f'Stufe 2 der Netzstabilisierung aktiviert frequenzabhängigen lastabwurf von 10 bis 15% der verbraucher'
+            f' (gezielter “Teil-Blackout).'],
+
+    [48.70, f'Stufe 3 der Netzstabilisierung. Abermals frequenzabhängiger lastabwurf von weiteren 10 bis 15% der '
+            f'Verbraucher.'],
+
+    [48.40, f'Stufe 4 der Netzstabilisierung. Frequenzabhängiger Lastabwurf. Weitere 10 bis 15% der Verbraucher gehen '
+            f'vom Netz.'],
+
+    [47.50, f'Stufe 5 der Netzstabilisierung führt zur gezielten Abtrennung von Netzsegmenten und Kraftwerken.'
+            f' “Regionaler Blackout”'],
+
+    [47.00, f'Unterhalb dieser Schwelle beginnt im europäischen Netzverbund ein unzulässiger Betriebszustand.'],
+
+]
 
 if on_server:
     pass
