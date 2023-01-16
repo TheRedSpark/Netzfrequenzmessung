@@ -136,6 +136,18 @@ def netzfrequenz_pull():
 
     return netzfrequenz
 
+def get_netzdata(number_of_data) -> list:
+    mydb = mysql.connector.connect(
+        host=v.host(ort),
+        user=v.user(ort),
+        passwd=v.passwd(ort),
+        database=v.database(),
+        auth_plugin='mysql_native_password')
+
+    my_cursor = mydb.cursor()
+    my_cursor.execute(f'SELECT * FROM `Netzfrequenmessung`.`Data` ORDER BY Zeit desc limit {number_of_data}')
+    result = my_cursor.fetchall()
+    return result
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     userlogging(update.effective_user.id, update.effective_user.username, update.effective_message.chat_id,
