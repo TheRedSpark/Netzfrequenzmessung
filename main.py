@@ -207,5 +207,12 @@ def main() -> None:
     application.run_polling(1)
 
 
+def pre_main():
+    if 50.20 > float(get_netzdata(1)[0][1]) > 49.80:
+        print("Netzfrequenz ist im Normalbereich")
+        
+    else:
+        pass
+
 if __name__ == '__main__':
-    main()
+    pre_main()
