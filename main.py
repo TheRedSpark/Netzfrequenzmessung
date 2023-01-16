@@ -1,7 +1,8 @@
 import time
 import mysql.connector  # 8.0.28
 import requests
-import math as Math
+import random
+# import math as Math
 from package import variables as v
 import logging
 
@@ -12,7 +13,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 
 on_server = False
 version = "1.0"
-is_live = True
+is_live = False
 ort = "server"
 
 if on_server:
@@ -73,16 +74,18 @@ def userlogging(user_id, username, message_chat_id, message_txt, message_id, fir
         my_cursor.close()
 
 
-def netzfrequenz_pull():
-    ##Math.round(Math.random()*100000)*31
+def generate_url():
+    client = round(random.randint(0, 10) * 10000) * 31
+    url = f'https://netzfrequenzmessung.de:9081/frequenz02a.xml?c={client}'
+    return url
 
-    x = requests.get('https://netzfrequenzmessung.de:9081/frequenz02a.xml?c=916856')
+
+def netzfrequenz_pull():
+    x = requests.get(generate_url())
     y = x.text.splitlines()
-    # print(y)
     netzfrequenz = y[1].replace("<f2>", "").replace("</f2>", "")
     zeit = y[3].replace("<z> ", "").replace("</z>", "")
 
-    print(zeit)
     return netzfrequenz
 
 
