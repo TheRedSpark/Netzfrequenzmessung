@@ -16,6 +16,7 @@ version = "1.0"
 is_live = False
 ort = "server"
 netz_alert = 0
+freqenz_state = 5
 
 frequenz_regeln = [
     # [Netzfrequenz ,"Erklärung des Zustandes"],
@@ -136,6 +137,7 @@ def netzfrequenz_pull():
 
     return netzfrequenz
 
+
 def get_netzdata(number_of_data) -> list:
     mydb = mysql.connector.connect(
         host=v.host(ort),
@@ -148,6 +150,34 @@ def get_netzdata(number_of_data) -> list:
     my_cursor.execute(f'SELECT * FROM `Netzfrequenmessung`.`Data` ORDER BY Zeit desc limit {number_of_data}')
     result = my_cursor.fetchall()
     return result
+
+def freqenz_analyse(frequenz, frequenz_state):
+    while True:
+        if float(frequenz_regeln[frequenz_state - 1][0]) > float(frequenz) > float(
+                frequenz_regeln[frequenz_state + 1][0]):
+            break
+        elif float(frequenz_regeln[frequenz_state - 1][0]) > float(
+                frequenz):  # Frequenzbereich liegt unter dem alten Wert
+            frequenz_state = frequenz_state + 1
+        elif float(frequenz) > float(
+                frequenz_regeln[frequenz_state + 1][0]):  # Frequenzbereich liegt über dem alten Wert
+            print("Frequenz ist drüber")
+            frequenz_state = frequenz_state - 1
+        else:
+            print("Nicht im If statment")
+
+    return frequenz_state
+
+
+def pre_main() -> int:
+    if 50.20 > float(get_netzdata(1)[0][1]) > 49.80:
+        print("Netzfrequenz ist im Normalbereich")
+        freqenz_state = 5
+        return freqenz_state
+
+    else:
+        return freqenz_analyse(float(get_netzdata(1)[0][1]), 1)
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     userlogging(update.effective_user.id, update.effective_user.username, update.effective_message.chat_id,
@@ -207,12 +237,7 @@ def main() -> None:
     application.run_polling(1)
 
 
-def pre_main():
-    if 50.20 > float(get_netzdata(1)[0][1]) > 49.80:
-        print("Netzfrequenz ist im Normalbereich")
-        
-    else:
-        pass
+
 
 if __name__ == '__main__':
-    pre_main()
+  print(pre_main())
