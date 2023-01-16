@@ -50,7 +50,7 @@ def netzfrequenz_pull():
         netzfrequenz = y[1].replace("<f2>", "").replace("</f2>", "")
         zeit = y[3].replace("<z> ", "").replace("</z>", "")
         return [zeit, netzfrequenz]
-    elif response.status_code == 426:
+    elif response.status_code == 429:
         raise ConnectionRefusedError
     else:
         print(response.status_code)
