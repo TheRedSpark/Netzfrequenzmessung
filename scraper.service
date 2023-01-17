@@ -6,7 +6,7 @@ After=syslog.target
 Restart=always
 Type=simple
 WorkingDirectory=/root/tbots/netzfrequenzmessung
-ExecStart=python3 /root/tbots/netzfrequenzmessung/main.py
+ExecStart=python3 /root/tbots/netzfrequenzmessung/scraper.py
 SyslogIdentifier=Netzfrequenzmesserbot
 RestartSec=5
 
