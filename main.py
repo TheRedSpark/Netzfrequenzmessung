@@ -16,7 +16,7 @@ version = "1.0"
 is_live = False
 ort = "server"
 netz_alert = 0
-freqenz_state = 5
+freqenz_state = 2
 
 frequenz_regeln = [
     # [Netzfrequenz ,"Erklärung des Zustandes"],
