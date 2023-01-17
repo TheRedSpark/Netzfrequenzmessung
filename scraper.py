@@ -44,7 +44,8 @@ def time_converter(time: str):
 
 def netzfrequenz_pull():
     response = requests.get(generate_url())
-    print(generate_url())
+    time.sleep(1)
+    #print(generate_url())
     if response.status_code == 200:
         y = response.text.splitlines()
         netzfrequenz = y[1].replace("<f2>", "").replace("</f2>", "")
@@ -64,6 +65,6 @@ def main():
         print("Das war zu viel")
         time.sleep(1)
 
-
+print("Scraper gestartet")
 while True:
     main()
