@@ -168,6 +168,23 @@ def freqenz_analyse(frequenz, frequenz_state):
 
     return frequenz_state
 
+def get_users():
+    results_clean = []
+    mydb = mysql.connector.connect(
+        host=v.host(ort),
+        user=v.user(ort),
+        passwd=v.passwd(ort),
+        database=v.database(),
+        auth_plugin='mysql_native_password')
+
+    my_cursor = mydb.cursor()
+    my_cursor.execute(f"SELECT User_Id FROM `Netzfrequenmessung`.`Users` ")
+    results_raw = my_cursor.fetchall()
+    my_cursor.close()
+    for raw in results_raw:
+        clen = int(str(raw).replace("(", "").replace(",)", "").strip())
+        results_clean.append(clen)
+    return results_clean
 
 def pre_main() -> int:
     if 50.20 > float(get_netzdata(1)[0][1]) > 49.80:
@@ -224,20 +241,44 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                                    text=f"https://www.youtube.com/watch?v=yaCiVvBD-xc\n")
 
 
+async def alert_freq(context: ContextTypes.DEFAULT_TYPE) -> None:
+    freqenz_state = pre_main()
+    global anzahl_0
+    if freqenz_state != 5:
+        if not is_live:
+            anzahl = [v.telegram_user_id]
+            for t_user in anzahl:
+                try:
+                    await context.bot.send_message(t_user, text=f'Der aktuelle stand ist {freqenz_state}')
+                    await context.bot.send_message(t_user, text=f'{frequenz_regeln[freqenz_state][1]}')
+                except:
+                    print(f'Fehlgeschlagen für User: {t_user}')
+        elif is_live:
+            anzahl = get_users()
+            for t_user in anzahl:
+                try:
+                    await context.bot.send_message(t_user, text=f'{freqenz_state[freqenz_state][1]}')
+                    print(f'Update:Erfolg für User: {t_user}')
+                    await context.bot.send_message(v.telegram_user_id, text=f'Push fertig für {len(anzahl)} User')
+                except:
+                    print(f'Fehlgeschlagen für User: {t_user}')
+
+
 def main() -> None:
     # Creating a telegram bot.
     application = Application.builder().token(v.telegram_netzfrequenz_api(is_live)).build()
-
+    pre_main()
     # Adding the handlers for the commands.
     application.add_handler(CommandHandler(["start", "help"], start))
     application.add_handler(CommandHandler(["netzfrequenz", "f"], netzfrequenz))
     application.add_handler(CommandHandler(["info", "i"], info))
     application.add_handler(CommandHandler("mitmachen", mitmachen))
+    job_queue = application.job_queue
 
+    # Running the function send_push every 60 seconds * 60 minutes * stundenabstand_push.
+    job_queue.run_repeating(alert_freq, interval=5, first=5)
     application.run_polling(1)
 
 
-
-
 if __name__ == '__main__':
-  print(pre_main())
+    main()
