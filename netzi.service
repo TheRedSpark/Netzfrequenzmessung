@@ -1,0 +1,15 @@
+[Unit]
+Description=Netzfrequenz Bot
+After=syslog.target
+
+[Service]
+Restart=always
+Type=simple
+WorkingDirectory=/root/tbots/netzfrequenzmessung
+ExecStart=python3 /root/tbots/netzfrequenzmessung/main.py
+ExecStart=python3 /root/tbots/netzfrequenzmessung/scraper.py
+SyslogIdentifier=Netzfrequenzmesserbot
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
