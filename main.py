@@ -12,7 +12,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
     filters, ConversationHandler  # 20.0a1
 
 on_server = False
-version = "1.0"
+version = "1.1"
 is_live = False
 ort = "server"
 netz_alert = 0
@@ -150,6 +150,7 @@ def get_netzdata(number_of_data) -> list:
     my_cursor.execute(f'SELECT * FROM `Netzfrequenmessung`.`Data` ORDER BY Zeit desc limit {number_of_data}')
     result = my_cursor.fetchall()
     return result
+
 
 def freqenz_analyse(frequenz, frequenz_state):
     while True:
