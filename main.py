@@ -130,12 +130,18 @@ def generate_url():
 
 
 def netzfrequenz_pull():
-    x = requests.get(generate_url())
-    y = x.text.splitlines()
-    netzfrequenz = y[1].replace("<f2>", "").replace("</f2>", "")
-    zeit = y[3].replace("<z> ", "").replace("</z>", "")
-
-    return netzfrequenz
+    response = requests.get(generate_url())
+    time.sleep(1)
+    if response.status_code == 200:
+        y = response.text.splitlines()
+        netzfrequenz = y[1].replace("<f2>", "").replace("</f2>", "")
+        zeit = y[3].replace("<z> ", "").replace("</z>", "")
+        return [zeit, netzfrequenz]
+    elif response.status_code == 429:
+        raise ConnectionRefusedError
+    else:
+        print(response.status_code)
+        raise ConnectionError
 
 
 def get_netzdata(number_of_data) -> list:
@@ -217,9 +223,27 @@ async def netzfrequenz(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     userlogging(update.effective_user.id, update.effective_user.username, update.effective_message.chat_id,
                 update.effective_message.text_markdown, update.effective_message.id, update.effective_user.first_name,
                 update.effective_user.last_name, update.effective_user.language_code)
-    frequenz = netzfrequenz_pull()
-    await context.bot.send_message(update.effective_user.id,
-                                   text=f"Die aktuelle Netzfrequenz beträgt: {frequenz}Hz")
+    try:
+        await context.bot.send_message(update.effective_user.id,
+                                       text=f"Die aktuelle Netzfrequenz beträgt {netzfrequenz_pull()[1]} Hz\n"
+                                            f"Die Messung wurde um {netzfrequenz_pull()[0]} Uhr durchgeführt")
+    except ConnectionRefusedError:
+        await context.bot.send_message(update.effective_user.id,
+                                       text=f"Die aktuelle Netzfrequenz beträgt {get_netzdata(1)[0][1]} Hz\n"
+                                            f"Die Messung wurde um {get_netzdata(1)[0][0]} Uhr durchgeführt\n"
+                                            f"Die Messung wurde nicht durchgeführt, da die maximale Anzahl an Anfragen "
+                                            f"erreicht wurde. \n")
+    except ConnectionError:
+        await context.bot.send_message(update.effective_user.id,
+                                       text=f"Die aktuelle Netzfrequenz beträgt {get_netzdata(1)[0][1]} Hz\n"
+                                            f"Die Messung wurde um {get_netzdata(1)[0][0]} Uhr durchgeführt\n"
+                                            f"Die Messung wurde nicht durchgeführt, da ein Fehler aufgetreten ist. \n")
+    except Exception as e:
+        await context.bot.send_message(update.effective_user.id,
+                                       text=f"Die aktuelle Netzfrequenz beträgt {get_netzdata(1)[0][1]} Hz\n"
+                                            f"Die Messung wurde um {get_netzdata(1)[0][0]} Uhr durchgeführt\n"
+                                            f"Die Messung wurde nicht durchgeführt, da ein Fehler aufgetreten ist. \n"
+                                            f"Error: {e}")
 
 
 async def mitmachen(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
